@@ -79,13 +79,6 @@ export default class MathParser {
 		}
 	}
 
-	static {
-		this.makeWalker('resolve', (node, result) => node.computed = result)
-		this.makeWalker('stringify', (node, result) => node.asString = result)
-		this.makeWalker('mapRange', (node, result) => node.outputRange = result)
-		this.makeWalker('tokenize', (context, result) => context.tokens.push(result))
-	}
-
 	parse(code) {
 		const tokens = this.tokenize(code)
 		// console.log(tokens)
@@ -139,3 +132,9 @@ export default class MathParser {
 		return n1 <= c1 && n2 + 1 >= c2
 	}
 }
+
+// TODO: this should be a class static block, but i don't think i can configure Jest's babel without ejecting from create-react-app
+MathParser.makeWalker('resolve', (node, result) => node.computed = result)
+MathParser.makeWalker('stringify', (node, result) => node.asString = result)
+MathParser.makeWalker('mapRange', (node, result) => node.outputRange = result)
+MathParser.makeWalker('tokenize', (context, result) => context.tokens.push(result))

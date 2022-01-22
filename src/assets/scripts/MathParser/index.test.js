@@ -10,7 +10,7 @@ import ImplicitMultiplicationPlugin from './plugins/ImplicitMultiplication'
 import NumberPlugin from './plugins/Numbers'
 import StringPlugin from './plugins/Strings'
 import PartialsPlugin from './plugins/Partials'
-import MathParser from '.';
+import MathParser from '.'
 
 describe('StringPlugin', () => {
 	it('should parse strings', () => {
