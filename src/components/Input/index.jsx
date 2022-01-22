@@ -1,5 +1,5 @@
 import styles from './index.module.scss'
-import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback, useState } from 'react'
+import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import useMediaQuery from '../../assets/hooks/useMediaQuery'
 
 function Input({
