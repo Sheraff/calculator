@@ -1,5 +1,6 @@
 {
   "name": "calculator",
+  "homepage": "https://sheraff.github.io/calculator",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
