@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Input from '../components/Input'
 import Parsed from '../components/Parsed'
 import Output from '../components/Output'
-import styles from './index.module.scss';
-import { unstable_batchedUpdates } from 'react-dom';
+import styles from './index.module.scss'
+import { unstable_batchedUpdates } from 'react-dom'
 
 function App() {
 	const initial = '(sin(10 +pi) * pi^2 + 3! * (-1 pi tau)'
@@ -101,7 +101,7 @@ function App() {
 				parsed={parsed}
 			/>
 		</main>
-	);
+	)
 }
 
-export default App;
+export default App

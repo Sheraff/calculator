@@ -68,7 +68,7 @@ export default class GroupPlugin extends Plugin {
 					inputRange[1] = subTokens[subTokens.length - 1].inputRange[1]
 				}
 				return new this.node({ type: 'group', nodes: [parser.reduce(subTokens)], inputRange, value: '()' })
-			} else if (!stack[i + 1] || this.matchTokenPair(item, stack[i + 1]), parser) { // handle empty parentheses pair
+			} else if (!stack[i + 1] || this.matchTokenPair(item, stack[i + 1], parser)) { // handle empty parentheses pair
 				const inputRange = [item.inputRange[0]]
 				if (stack[i + 1]) {
 					inputRange[1] = stack[i + 1].inputRange[1]

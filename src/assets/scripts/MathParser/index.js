@@ -1,4 +1,4 @@
-import Node from './classes/Node';
+import Node from './classes/Node'
 
 /**
  * @template T
@@ -124,7 +124,7 @@ export default class MathParser {
 	static locateCaret(node, caret) {
 		if (node.nodes) {
 			for (let i = 0; i < node.nodes.length; i++) {
-				const partial = node.nodes[i];
+				const partial = node.nodes[i]
 				if (MathParser.testNodeForCaret(partial, caret)) {
 					return MathParser.locateCaret(partial, caret)
 				}

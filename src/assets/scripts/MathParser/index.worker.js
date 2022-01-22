@@ -10,7 +10,7 @@ import ImplicitMultiplicationPlugin from './plugins/ImplicitMultiplication'
 import NumberPlugin from './plugins/Numbers'
 import StringPlugin from './plugins/Strings'
 import PartialsPlugin from './plugins/Partials'
-import MathParser from '.';
+import MathParser from '.'
 
 const parser = new MathParser([
 	ConstPlugin,
@@ -84,4 +84,4 @@ onmessage = ({ data: { value, caret } }) => {
 		handleCaret(data, caret)
 	}
 	postMessage(data)
-};
+}

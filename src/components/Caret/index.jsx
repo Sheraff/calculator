@@ -1,7 +1,7 @@
 import styles from './index.module.scss'
 import { useRef, createContext, useEffect } from 'react'
 
-export const CaretContext = createContext([]);
+export const CaretContext = createContext([])
 
 export default function Caret({caret, children}) {
 	const ref = useRef(null)
