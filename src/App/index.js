@@ -6,22 +6,6 @@ import Parsed from '../components/Parsed'
 import Output from '../components/Output'
 import NumPad from '../components/NumPad'
 
-const INPUT_MAP = {
-	'+': ' + ',
-	'-': ' - ',
-	'×': ' × ',
-	'÷': ' ÷ ',
-	'^': ' ^ ',
-	'sin': 'sin(',
-	'cos': 'cos(',
-	'tan': 'tan(',
-	'sin⁻¹': 'sin⁻¹(', 
-	'cos⁻¹': 'cos⁻¹(',
-	'tan⁻¹': 'tan⁻¹(',
-	'log': 'log(',
-	'ln': 'ln(',
-}
-
 function App() {
 	const initial = '(sin(10 +pi) * pi^2 + 3! * (-1 pi tau)'
 	// const initial = 'pi 2 tau'
@@ -47,6 +31,7 @@ function App() {
 		mirror.scrollLeft = mirrorAvailableScroll * percentScroll
 
 	}, [])
+
 	const onScroll = useCallback(({currentTarget}) => {
 		if (
 			rafId.current === null
@@ -55,6 +40,7 @@ function App() {
 			rafId.current = requestAnimationFrame(() => onFrame(currentTarget))
 		}
 	}, [onFrame])
+
 	const onPointerEnter = useCallback((event) => {
 		acceptScrollFromElement.current = event.currentTarget
 	}, [])
@@ -94,6 +80,7 @@ function App() {
 		inputRef.current.setSelectionRange(detail[0], detail[1] + 1)
 	}
 
+	// change <Input> on interaction with <NumPad>
 	const inputControlsRef = useRef(/** @type {{insert: (text: string) => void}} */(null))
 	const numPadRef = useRef(/** @type {HTMLDivElement} */(null))
 	useEffect(() => {
@@ -103,7 +90,7 @@ function App() {
 			} else if (detail === '⌫') {
 				inputControlsRef.current.delete()
 			} else {
-				inputControlsRef.current.insert(INPUT_MAP[detail] || detail)
+				inputControlsRef.current.insert(detail)
 			}
 		}
 		const {current} = numPadRef
