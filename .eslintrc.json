@@ -1,0 +1,20 @@
+{
+	"extends": [
+		"react-app"
+	],
+	"rules": {
+		"indent": [
+			"error",
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"no-tabs": "off",
+		"semi": [
+			"error",
+			"never"
+		],
+		"default-case": "off"
+	}
+}
