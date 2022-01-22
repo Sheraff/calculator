@@ -1,5 +1,5 @@
-import factorial from '../utils/factorial';
-import { divide } from '../utils/floatMath';
+import factorial from '../utils/factorial'
+import { divide } from '../utils/floatMath'
 import UnaryOperatorPlugin from './UnaryOperators'
 
 class RightUnaryOperatorToken extends UnaryOperatorPlugin.token {}

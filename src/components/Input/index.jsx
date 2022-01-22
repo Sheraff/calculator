@@ -47,7 +47,7 @@ function Input({
 				const withParen = value.slice(0, a) + '(' + value.slice(a, b) + ')' + value.slice(b)
 				current.value = withParen
 				caretRef.current = [a, b + 2]
-				current.setSelectionRange(...caretRef.current);
+				current.setSelectionRange(...caretRef.current)
 				e.preventDefault()
 				onChange(e, caretRef.current)
 			}
