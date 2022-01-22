@@ -18,8 +18,10 @@ export default class ParentNode extends Node {
 	}) {
 		super(rest)
 		this.nodes = nodes
-		for (const node of this.nodes) {
-			node.parent = this
+		if (nodes) {
+			for (const node of nodes) {
+				node.parent = this
+			}
 		}
 	}
 }
