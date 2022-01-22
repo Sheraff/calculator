@@ -1,8 +1,9 @@
 .input {
 	border: 0;
-	padding: 6px 0;
+	padding: .5em 1em;
+	outline: none;
 
 	&::selection {
-		background-color: rgba(0, 255, 0, 0.432);
+		background-color: var(--bg-blue);
 	}
 }

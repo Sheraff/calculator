@@ -1,19 +1,71 @@
-#root {
-	padding: 1em;
+@use './variables' as *;
+
+:root {
+	--bg-blue: #{$light-bg-blue};
+	--text-blue: #{$light-text-blue};
+	
+	--bg-num-pad: #{$light-bg-num-pad};
+	--text-num-pad: #{$light-text-num-pad};
+	--symbols-num-pad: #{$light-symbols-num-pad};
+
+	--bg-result-area: #{$light-bg-result-area};
+	--text-result-area: #{$light-text-result-area};
+	--subtext-result-area: #{$light-subtext-result-area};
+
+	--error: #{$light-error};
+
+	@media (prefers-color-scheme: dark) {
+		--bg-blue: #{$dark-bg-blue};
+		--text-blue: #{$dark-text-blue};
+		
+		--bg-num-pad: #{$dark-bg-num-pad};
+		--text-num-pad: #{$dark-text-num-pad};
+		--symbols-num-pad: #{$dark-symbols-num-pad};
+		
+		--bg-result-area: #{$dark-bg-result-area};
+		--text-result-area: #{$dark-text-result-area};
+		--subtext-result-area: #{$dark-subtext-result-area};
+
+		--error: #{$dark-error};
+	}
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	height: 100%;
+	background-color: var(--bg-result-area);
+	color: var(--text-result-area);
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 input,
 code,
 output {
+	color: inherit;
+	font-family: inherit;
+	background: transparent;
 	font-size: 1em;
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+	text-align: inherit;
+}
+
+ul,ol {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+button {
+	border: none;
+	background-color: transparent;
+	color: inherit;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
 }

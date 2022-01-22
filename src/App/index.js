@@ -1,9 +1,26 @@
+import { unstable_batchedUpdates } from 'react-dom'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import styles from './index.module.scss'
 import Input from '../components/Input'
 import Parsed from '../components/Parsed'
 import Output from '../components/Output'
-import styles from './index.module.scss'
-import { unstable_batchedUpdates } from 'react-dom'
+import NumPad from '../components/NumPad'
+
+const INPUT_MAP = {
+	'+': ' + ',
+	'-': ' - ',
+	'×': ' × ',
+	'÷': ' ÷ ',
+	'^': ' ^ ',
+	'sin': 'sin(',
+	'cos': 'cos(',
+	'tan': 'tan(',
+	'sin⁻¹': 'sin⁻¹(', 
+	'cos⁻¹': 'cos⁻¹(',
+	'tan⁻¹': 'tan⁻¹(',
+	'log': 'log(',
+	'ln': 'ln(',
+}
 
 function App() {
 	const initial = '(sin(10 +pi) * pi^2 + 3! * (-1 pi tau)'
@@ -77,29 +94,54 @@ function App() {
 		inputRef.current.setSelectionRange(detail[0], detail[1] + 1)
 	}
 
+	const inputControlsRef = useRef(/** @type {{insert: (text: string) => void}} */(null))
+	const numPadRef = useRef(/** @type {HTMLDivElement} */(null))
+	useEffect(() => {
+		const onNumPadClick = ({detail}) => {
+			if (detail === 'AC') {
+				inputControlsRef.current.clear()
+			} else if (detail === '⌫') {
+				inputControlsRef.current.delete()
+			} else {
+				inputControlsRef.current.insert(INPUT_MAP[detail] || detail)
+			}
+		}
+		const {current} = numPadRef
+		current.addEventListener('action', onNumPadClick)
+		return () => {
+			current.removeEventListener('action', onNumPadClick)
+		}
+	}, [])
+
 	return (
 		<main className={styles.main}>
-			<Input
-				ref={inputRef}
-				id="input"
-				onChange={onChange}
-				onCaret={onCaret}
-				onScroll={onScroll}
-				onPointerEnter={onPointerEnter}
-				defaultValue={initial}
-			/>
-			<Parsed
-				ref={parsedRef}
-				parsed={parsed}
-				caret={caret}
-				onSetCaret={onSetCaret}
-				onScroll={onScroll}
-				onPointerEnter={onPointerEnter}
-			/>
-			<Output
-				htmlFor="input"
-				parsed={parsed}
-			/>
+			<div className={styles.output}>
+				<Input
+					ref={inputRef}
+					controlsRef={inputControlsRef}
+					id="input"
+					onChange={onChange}
+					onCaret={onCaret}
+					onScroll={onScroll}
+					onPointerEnter={onPointerEnter}
+					defaultValue={initial}
+				/>
+				<Parsed
+					ref={parsedRef}
+					parsed={parsed}
+					caret={caret}
+					onSetCaret={onSetCaret}
+					onScroll={onScroll}
+					onPointerEnter={onPointerEnter}
+				/>
+				<Output
+					htmlFor="input"
+					parsed={parsed}
+				/>
+			</div>
+			<div className={styles.input}>
+				<NumPad ref={numPadRef} />
+			</div>
 		</main>
 	)
 }

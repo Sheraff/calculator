@@ -3,6 +3,7 @@
 	isolation: isolate;
 	z-index: 0;
 	display: inline-block;
+	overflow: hidden;
 
 	div {
 		white-space: nowrap;
@@ -16,7 +17,7 @@
 
 	position: absolute;
 	z-index: -1;
-	background-color: rgba(0, 255, 0, 0.432);
+	background-color: var(--bg-blue);
 	white-space: pre;
 	transform-origin: left;
 	transform: translateX(calc(var(--left) * 10%)) scaleX(calc(var(--width) * 10%));

@@ -1,0 +1,93 @@
+@use '../../assets/styles/variables' as *;
+
+.main {
+	background-color: var(--bg-num-pad);
+	color: var(--text-num-pad);
+	display: grid;
+	grid-template-areas: "num";
+	overflow: hidden;
+
+	@media(min-width: 768px) {
+		grid-template-areas: "num extras";
+	}
+}
+
+.num,
+.extras {
+	grid-area: num;
+	display: grid;
+	grid-auto-rows: 1fr;
+
+	> * {
+		display: flex;
+		justify-content: center;
+		align-items: stretch;
+	}
+
+	button {
+		padding: 1em;
+		font-size: 1.5em;
+		font-weight: bold;
+		text-align: center;
+		width: 100%;
+	}
+}
+
+.num {
+	grid-template-columns: repeat(4, 1fr);
+	padding-right: 2em;
+
+	>:nth-child(4n) {
+		color: var(--symbols-num-pad);
+		border-left: 1px solid var(--subtext-result-area);
+	}
+
+	@media(min-width: 768px) {
+		padding-right: 0;
+	}
+}
+
+.extras {
+	background-color: var(--bg-blue);
+	color: var(--text-blue);
+	grid-template-columns: repeat(3, 1fr);
+
+	// drawer styles
+	position: relative;
+	transform: translateX(calc(100% - 2em));
+	transition: transform 500ms;
+	padding-left: 2em;
+
+	@media(min-width: 768px) {
+		transform: none;
+		padding-left: 0;
+		grid-area: extras;
+	}
+}
+
+.toggle {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 2em;
+	box-sizing: content-box;
+
+	button {
+		transition: transform 500ms;
+		padding: 0;
+	}
+
+	@media(min-width: 768px) {
+		display: none;
+	}
+}
+
+.open {
+	transform: translateX(0);
+
+	.toggle button {
+		transform: scaleX(-1);
+	}
+}
+

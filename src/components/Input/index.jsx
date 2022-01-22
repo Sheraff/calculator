@@ -1,5 +1,6 @@
 import styles from './index.module.scss'
-import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
+import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback, useState } from 'react'
+import useMediaQuery from '../../assets/hooks/useMediaQuery'
 
 function Input({
 	id,
@@ -8,6 +9,7 @@ function Input({
 	defaultValue,
 	onScroll,
 	onPointerEnter,
+	controlsRef,
 }, _ref) {
 	const ref = useRef(null)
 	const caretRef = useRef([])
@@ -38,6 +40,21 @@ function Input({
 		onCaret(null)
 	}
 
+	const onInputChange = ({nativeEvent}) => {
+		updateCaretRef(() => {
+			onChange(nativeEvent, caretRef.current)
+		})
+	}
+
+	const readOnly = useMediaQuery('(pointer: coarse)')
+
+	const onProgrammaticChange = useCallback((value, [a, b]) => {
+		ref.current.value = value
+		caretRef.current = [a, b]
+		ref.current.setSelectionRange(a, b)
+		onChange({target: ref.current}, caretRef.current)
+	}, [onChange])
+
 	const onKeyDown = (e) => {
 		if (e.key === '(') {
 			const [a, b] = caretRef.current
@@ -45,20 +62,34 @@ function Input({
 				const {current} = ref
 				const {value} = current
 				const withParen = value.slice(0, a) + '(' + value.slice(a, b) + ')' + value.slice(b)
-				current.value = withParen
-				caretRef.current = [a, b + 2]
-				current.setSelectionRange(...caretRef.current)
 				e.preventDefault()
-				onChange(e, caretRef.current)
+				onProgrammaticChange(withParen, [a, b + 2])
 			}
 		}
 	}
 
-	const onInputChange = ({nativeEvent}) => {
-		updateCaretRef(() => {
-			onChange(nativeEvent, caretRef.current)
-		})
-	}
+	useImperativeHandle(controlsRef, () => ({
+		insert: (text) => {
+			const [a, b] = caretRef.current
+			const {value} = ref.current
+			const withText = value.slice(0, a) + text + value.slice(b)
+			onProgrammaticChange(withText, [b + text.length, b + text.length])
+		},
+		clear: () => {
+			onProgrammaticChange('', [0, 0])
+		},
+		delete: () => {
+			const [a, b] = caretRef.current
+			const {value} = ref.current
+			if (a === b) {
+				const text = value.slice(0, a - 1) + value.slice(a)
+				onProgrammaticChange(text, [a - 1, a - 1])
+			} else {
+				const text = value.slice(0, a) + value.slice(b)
+				onProgrammaticChange(text, [a, a])
+			}
+		}
+	}), [onProgrammaticChange])
 
 	return (
 		<input
@@ -72,6 +103,9 @@ function Input({
 			defaultValue={defaultValue}
 			onScroll={onScroll}
 			onPointerEnter={onPointerEnter}
+			readOnly={readOnly}
+			spellCheck="false"
+			autoFocus
 		/>
 	)
 }

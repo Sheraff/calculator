@@ -3,19 +3,19 @@
 }
 
 .hover {
-	box-shadow: inset 0 0 0 1px purple;
+	box-shadow: inset 0 0 0 1px var(--text-num-pad);
 }
 
 .hover,
 .active {
 	> code {
-		color: red;
+		color: var(--error);
 		font-weight: 900;
 	}
 }
 
 .invalid {
 	> code {
-		text-decoration: red line-through;
+		text-decoration: var(--error) line-through;
 	}
 }
