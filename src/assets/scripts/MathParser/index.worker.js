@@ -77,8 +77,9 @@ function mapCaretToOutput(parsed, caret) {
 
 onmessage = ({ data: { value, caret } }) => {
 	const data = {}
-	if (value) {
-		handleParsing(data, value)
+	if (typeof value === 'string') {
+		const lowercaseValue = value.toLowerCase()
+		handleParsing(data, lowercaseValue)
 	}
 	if (caret !== undefined) {
 		handleCaret(data, caret)

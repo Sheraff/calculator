@@ -81,6 +81,13 @@ export default class MathParser {
 
 	parse(code) {
 		const tokens = this.tokenize(code)
+		if (tokens.length === 0) {
+			const emptyNode = new Node({type: 'string', inputRange: [0, 0], value: ''})
+			emptyNode.outputRange = [0, 0]
+			emptyNode.computed = 0
+			emptyNode.asString = ''
+			return emptyNode
+		}
 		// console.log(tokens)
 		const ast = this.reduce(tokens)
 		// console.log(ast)
