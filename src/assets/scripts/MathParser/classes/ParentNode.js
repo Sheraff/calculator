@@ -18,5 +18,8 @@ export default class ParentNode extends Node {
 	}) {
 		super(rest)
 		this.nodes = nodes
+		for (const node of this.nodes) {
+			node.parent = this
+		}
 	}
 }

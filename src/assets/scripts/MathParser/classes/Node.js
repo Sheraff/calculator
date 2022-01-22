@@ -19,6 +19,9 @@ export default class Node extends Token {
 	/** @type {string} */
 	asString
 
+	/** @type {Node} */
+	parent = null
+
 	/** @param {NodeConstructor} props */
 	constructor({
 		type = 'node',
@@ -32,6 +35,7 @@ export default class Node extends Token {
 	static clone(node) {
 		const clone = new node.constructor(node)
 		clone.outputRange = node.outputRange
+		clone.parent = node.parent
 		return clone
 	}
 }
