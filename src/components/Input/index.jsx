@@ -72,7 +72,6 @@ function Input({
 			defaultValue={defaultValue}
 			onScroll={onScroll}
 			onPointerEnter={onPointerEnter}
-			inputMode="decimal"
 		/>
 	)
 }
