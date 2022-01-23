@@ -63,6 +63,7 @@ function NumPad({
 							data-action={key}
 							tabIndex={drawer ? -1 : 0}
 							onPointerDown={noStealFocus}
+							onContextMenu={noStealFocus}
 						>
 							{key}
 						</button>
@@ -82,6 +83,7 @@ function NumPad({
 							data-action={key}
 							tabIndex={drawer ? 0 : -1}
 							onPointerDown={noStealFocus}
+							onContextMenu={noStealFocus}
 						>
 							{key}
 						</button>
