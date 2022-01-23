@@ -6,7 +6,7 @@ class ConstNode extends Plugin.node {}
 export default class ConstPlugin extends Plugin {
 	static token = StringPlugin.token
 	static node = ConstNode
-	static constants = ['π', 'pi', 'e', 'gold', 'phi', 'ɸ', 'tau', 'τ']
+	static constants = ['π', 'pi', 'e', 'gold', 'phi', 'ɸ', 'tau', 'τ', 'infinity', '∞']
 
 	static tokenize = null
 
@@ -30,6 +30,9 @@ export default class ConstPlugin extends Plugin {
 			case 'tau':
 			case 'τ':
 				return Math.PI * 2
+			case 'infinity':
+			case '∞':
+				return Infinity
 		}
 	}
 
@@ -47,6 +50,9 @@ export default class ConstPlugin extends Plugin {
 			case 'tau':
 			case 'τ':
 				return 'τ'
+			case 'infinity':
+			case '∞':
+				return '∞'
 		}
 	}
 
@@ -64,6 +70,8 @@ export default class ConstPlugin extends Plugin {
 			case 'ɸ':
 			case 'tau':
 			case 'τ':
+			case 'infinity':
+			case '∞':
 				return [node.inputRange[0], node.inputRange[0]]
 		}
 	}

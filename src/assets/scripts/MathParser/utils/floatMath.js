@@ -12,21 +12,33 @@ function getMultiplier(a, b) {
 }
 
 export function multiply(a, b) {
+	if (Math.abs(a) === Infinity || Math.abs(b) === Infinity) {
+		return a * b
+	}
 	const m = getMultiplier(a, b)
 	return (a * m) * (b * m) / (m * m)
 }
 
 export function divide(a, b) {
+	if (Math.abs(a) === Infinity || Math.abs(b) === Infinity) {
+		return a / b
+	}
 	const m = getMultiplier(a, b)
 	return (a * m) / (b * m)
 }
 
 export function add(a, b) {
+	if (Math.abs(a) === Infinity || Math.abs(b) === Infinity) {
+		return a + b
+	}
 	const m = getMultiplier(a, b)
 	return ((a * m) + (b * m)) / m
 }
 
 export function subtract(a, b) {
+	if (Math.abs(a) === Infinity || Math.abs(b) === Infinity) {
+		return a - b
+	}
 	const m = getMultiplier(a, b)
 	return ((a * m) - (b * m)) / m
 }

@@ -35,3 +35,10 @@ it('loses precision but doesn\'t fail', () => {
 	expect(add(1e+100, 1e-100)).toEqual(1e+100)
 	expect(subtract(1e+100, 1e-100)).toEqual(1e+100)
 })
+
+it('handles Infinity', () => {
+	expect(add(Infinity, 3)).toEqual(Infinity)
+	expect(subtract(2, Infinity)).toEqual(-Infinity)
+	expect(multiply(-2, Infinity)).toEqual(-Infinity)
+	expect(divide(2, Infinity)).toEqual(0)
+})
