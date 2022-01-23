@@ -147,6 +147,9 @@ function Input({
 		delete: () => {
 			const [a, b] = caretRef.current
 			const {value} = ref.current
+			if (!value) {
+				return
+			}
 			if (a === b) {
 				const deleteCharCount = findWordAtPosition(value, a)
 				const text = value.slice(0, a - deleteCharCount) + value.slice(a)
