@@ -6,6 +6,9 @@ import Parsed from '../Parsed'
 import Result from '../Result'
 
 /**
+ * @typedef {import('../../assets/scripts/MathParser/classes/Node').default} Node
+ * @typedef {[number, number]} Caret
+ * 
  * @typedef {import('../Input').InputControls} InputControls
  *
  * @typedef {Object} OutputControlsAugment
@@ -17,7 +20,7 @@ import Result from '../Result'
 export default function Output({
 	controlsRef,
 }) {
-	const [parsed, setParsed] = useState({})
+	const [parsed, setParsed] = useState(/** @type {Node | {}} */({}))
 	const [caret, setCaret] = useState(null)
 	const inputRef = useRef(/** @type {HTMLInputElement} */(null))
 	const parsedRef = useRef(/** @type {HTMLElement} */(null))
@@ -57,8 +60,10 @@ export default function Output({
 	const worker = useRef(/** @type {Worker} */(null))
 	useEffect(() => {
 		worker.current = new Worker(new URL('../../assets/scripts/MathParser/index.worker.js', import.meta.url))
-		worker.current.onmessage = ({ data: { parsed, caret } }) => {
+		worker.current.onmessage = ({ data }) => {
 			unstable_batchedUpdates(() => {
+				const parsed = (/** @type {Node | {}} */(data.parsed))
+				const caret = (/** @type {Caret | null} */(data.caret))
 				if (parsed) {
 					setParsed(parsed)
 					// console.log(parsed)
@@ -116,7 +121,7 @@ export default function Output({
 			/>
 			<Result
 				htmlFor="input"
-				parsed={parsed}
+				computed={parsed.computed}
 			/>
 		</div>
 	)

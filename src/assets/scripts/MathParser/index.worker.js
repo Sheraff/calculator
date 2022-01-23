@@ -12,6 +12,12 @@ import StringPlugin from './plugins/Strings'
 import PartialsPlugin from './plugins/Partials'
 import MathParser from '.'
 
+/**
+ * @typedef {import('./classes/Node').default} Node
+ *
+ * @typedef {[number, number]} Caret
+ */
+
 const parser = new MathParser([
 	ConstPlugin,
 	GroupPlugin,
@@ -29,7 +35,11 @@ const parser = new MathParser([
 
 let lastParsed = {}
 let lastValue = ''
-const parsedMap = new Map()
+const parsedMap = /** @type {Map<String, Node | {}>} */(new Map([[lastValue, lastParsed]]))
+/**
+ * @param {Object} data
+ * @param {string} value
+ */
 function handleParsing(data, value) {
 	if (parsedMap.has(value)) {
 		lastParsed = parsedMap.get(value)
@@ -42,7 +52,11 @@ function handleParsing(data, value) {
 }
 
 let lastCaret = null
-const caretMap = new Map()
+const caretMap = /** @type {Map<String, Caret | null>} */(new Map())
+/**
+ * @param {Object} data
+ * @param {Caret | null} caret
+ */
 function handleCaret(data, caret) {
 	if (!caret) {
 		lastCaret = null
@@ -54,7 +68,7 @@ function handleCaret(data, caret) {
 	const newCaret = exists
 		? caretMap.get(caretKey)
 		: mapCaretToOutput(lastParsed, caret)
-	const nullCount = (lastCaret === null) + (newCaret === null)
+	const nullCount = Number(lastCaret === null) + Number(newCaret === null)
 	if (nullCount === 1 || (
 		nullCount === 0 && (lastCaret[0] !== newCaret[0] || lastCaret[1] !== newCaret[1])
 	)) {
@@ -65,6 +79,11 @@ function handleCaret(data, caret) {
 		caretMap.set(caretKey, newCaret)
 	}
 }
+/**
+ * @param {Node | {}} parsed
+ * @param {Caret | null} caret
+ * @returns {Caret | null}
+ */
 function mapCaretToOutput(parsed, caret) {
 	if (!caret || !parsed.inputRange) {
 		return null
@@ -75,14 +94,16 @@ function mapCaretToOutput(parsed, caret) {
 	return MathParser.locateCaret(parsed, caret)
 }
 
-onmessage = ({ data: { value, caret } }) => {
-	const data = {}
+onmessage = ({ data }) => {
+	const message = {}
+	const value = (/** @type {string | undefined} */(data.value))
+	const caret = (/** @type {Caret | null | undefined} */(data.caret))
 	if (typeof value === 'string') {
 		const lowercaseValue = value.toLowerCase()
-		handleParsing(data, lowercaseValue)
+		handleParsing(message, lowercaseValue)
 	}
 	if (caret !== undefined) {
-		handleCaret(data, caret)
+		handleCaret(message, caret)
 	}
-	postMessage(data)
+	postMessage(message)
 }

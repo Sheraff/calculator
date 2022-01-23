@@ -18,14 +18,15 @@ const EXTRA_KEYS = [
 	['π', '!', '⌫'],
 ]
 
-function NumPad(_, ref) {
+function NumPad({
+	onDispatch,
+}, ref) {
 	const [drawer, setDrawer] = useState(false)
 
 	/** @type {React.MouseEventHandler<HTMLDivElement>} */
 	const onClick = (e) => {
 		if (e.target.dataset.action) {
-			const event = new CustomEvent('action', { detail: e.target.dataset.action })
-			e.currentTarget.dispatchEvent(event)
+			onDispatch(e.target.dataset.action)
 		}
 	}
 

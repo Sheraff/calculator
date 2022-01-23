@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import styles from './index.module.scss'
 import Output from '../components/Output'
 import NumPad from '../components/NumPad'
@@ -9,27 +9,25 @@ function App() {
 	const numPadRef = useRef(/** @type {HTMLDivElement} */(null))
 	const outputControlsRef = useRef(/** @type {import('../components/Output').OutputControls} */(null))
 	const historyControlsRef = useRef(/** @type {import('../components/History').HistoryControls} */(null))
-	useEffect(() => {
-		const onNumPadClick = ({detail}) => {
-			if (detail === 'AC') {
+	const onNumPadDispatch = (value) => {
+		if (value === 'AC') {
+			outputControlsRef.current.replace('')
+		} else if (value === '⌫') {
+			outputControlsRef.current.delete()
+		} else if (value === '=') {
+			const {asString, computed} = outputControlsRef.current.getParsed()
+			historyControlsRef.current.add(asString, computed)
+			if (isNaN(computed)) {
 				outputControlsRef.current.replace('')
-			} else if (detail === '⌫') {
-				outputControlsRef.current.delete()
-			} else if (detail === '=') {
-				const {asString, computed} = outputControlsRef.current.getParsed()
-				historyControlsRef.current.add(asString, computed)
-				outputControlsRef.current.replace(String(computed))
 			} else {
-				outputControlsRef.current.insert(detail)
+				outputControlsRef.current.replace(String(computed))
 			}
+		} else {
+			outputControlsRef.current.insert(value)
 		}
-		const {current} = numPadRef
-		current.addEventListener('action', onNumPadClick)
-		return () => {
-			current.removeEventListener('action', onNumPadClick)
-		}
-	}, [])
+	}
 
+	// change <Input> on interaction with <History>
 	const onRewind = (text) => {
 		outputControlsRef.current.replace(text)
 	}
@@ -40,7 +38,7 @@ function App() {
 				<Output controlsRef={outputControlsRef} />
 			</div>
 			<div className={styles.numpad}>
-				<NumPad ref={numPadRef} />
+				<NumPad ref={numPadRef} onDispatch={onNumPadDispatch} />
 			</div>
 			<div className={styles.history}>
 				<History controlsRef={historyControlsRef} onRewind={onRewind} />
