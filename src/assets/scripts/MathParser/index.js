@@ -1,4 +1,9 @@
 import Node from './classes/Node'
+import ParentNode from './classes/ParentNode'
+
+/**
+ * @typedef {import('./classes/Token').default} Token
+ */
 
 /**
  * @template T
@@ -25,12 +30,15 @@ export default class MathParser {
 	/** @type {Walker<Node>} */
 	static mapRange
 
-	/** @param {string} code */
+	/** 
+	 * @param {string} code
+	 * @returns {Token[]}
+	 */
 	tokenize(code) {
-		const context = {
+		const context = /** @type {import('./classes/Plugin').TokenizeContext} */ ({
 			stack: code.split(''),
 			tokens: [],
-		}
+		})
 		for (context.i = 0; context.i < context.stack.length; context.i++) {
 			context.item = context.stack[context.i]
 			MathParser.tokenize.call(this, context, true)
@@ -38,6 +46,10 @@ export default class MathParser {
 		return context.tokens
 	}
 
+	/** 
+	 * @param {Token[]} tokens
+	 * @returns {Node}
+	 */
 	reduce(tokens) {
 		const context = /** @type {import('./classes/Plugin').ReduceContext} */ ({
 			result: [],
@@ -62,7 +74,7 @@ export default class MathParser {
 				context.result = []
 			}
 		}
-		return context.stack[0]
+		return /** @type {Node} */(context.stack[0])
 	}
 
 	static makeWalker(method, callback) {
@@ -79,6 +91,10 @@ export default class MathParser {
 		}
 	}
 
+	/**
+	 * @param {string} code 
+	 * @returns {Node}
+	 */
 	parse(code) {
 		const tokens = this.tokenize(code)
 		if (tokens.length === 0) {
@@ -88,18 +104,12 @@ export default class MathParser {
 			emptyNode.asString = ''
 			return emptyNode
 		}
-		// console.log(tokens)
 		const ast = this.reduce(tokens)
-		// console.log(ast)
 		const processed = MathParser.walk(ast, [
 			MathParser.resolve.bind(this),
 			MathParser.stringify.bind(this),
 			MathParser.mapRange.bind(this),
 		])
-		// console.log(ast)
-		// console.log(processed.asString + ' = ' + processed.computed)
-		// console.log(JSON.stringify(processed))
-		// console.log(processed)
 		return processed
 	}
 
@@ -112,17 +122,28 @@ export default class MathParser {
 		return false
 	}
 
-	static walk(node, exit) {
+	/**
+	 * @template T
+	 * @param {T} node
+	 * @param {Array<(node: T) => void>} onExit
+	 * @returns {T}
+	 */
+	static walk(node, onExit) {
 		const clone = Node.clone(node)
 		if (clone.nodes) {
-			clone.nodes = clone.nodes.map(partial => MathParser.walk(partial, exit))
+			clone.nodes = clone.nodes.map(partial => MathParser.walk(partial, onExit))
 		}
-		exit.forEach((fn) => fn(clone))
+		onExit.forEach((fn) => fn(clone))
 		return clone
 	}
 
+	/**
+	 * @param {Node | ParentNode} node
+	 * @param {[number, number]} caret
+	 * @returns {[number, number] | []}
+	 */
 	static locateCaret(node, caret) {
-		if (node.nodes) {
+		if (node instanceof ParentNode && node.nodes) {
 			for (let i = 0; i < node.nodes.length; i++) {
 				const partial = node.nodes[i]
 				if (MathParser.testNodeForCaret(partial, caret)) {
@@ -133,6 +154,11 @@ export default class MathParser {
 		return node.outputRange
 	}
 
+	/**
+	 * @param {Node} node 
+	 * @param {[number, number]} caret 
+	 * @returns 
+	 */
 	static testNodeForCaret(node, caret) {
 		const [n1, n2] = node.inputRange
 		const [c1, c2] = caret

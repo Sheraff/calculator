@@ -37,6 +37,8 @@ let lastParsed = {}
 let lastValue = ''
 const parsedMap = /** @type {Map<String, Node | {}>} */(new Map([[lastValue, lastParsed]]))
 /**
+ * populate `data` with AST from parsed `value`
+ * results are memoized in `parsedMap` for better performance
  * @param {Object} data
  * @param {string} value
  */
@@ -54,6 +56,8 @@ function handleParsing(data, value) {
 let lastCaret = null
 const caretMap = /** @type {Map<String, Caret | null>} */(new Map())
 /**
+ * populate `data` with mapped caret position from `caret` and last AST
+ * results are memoized in `caretMap` for better performance
  * @param {Object} data
  * @param {Caret | null} caret
  */
