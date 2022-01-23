@@ -471,5 +471,9 @@ describe('plugins interactions', () => {
 			const result = parser.parse('√2 - π') // 'π' was not considered a Const (nor any other symbols)
 			expect(result.type).toBe('operation-binary')
 		}
+		{
+			const result = parser.parse('3.1!')
+			expect(result.computed).not.toBe(6.510000000000001)
+		}
 	})
 })
