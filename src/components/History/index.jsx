@@ -16,7 +16,12 @@ export default function History({
 
 	useImperativeHandle(controlsRef, () => (/** @type {HistoryControls} */({
 		add: (text, result) => {
-			setHistory((current) => [[text, result], ...current])
+			setHistory((current) => {
+				if(current[0] && text === current[0][0] && result === current[0][1]) {
+					return current
+				}
+				return [[text, result], ...current]
+			})
 		},
 	})), [])
 

@@ -26,6 +26,9 @@ function App() {
 			outputControlsRef.current.delete()
 		} else if (value === '=') {
 			const {asString, computed} = outputControlsRef.current.getParsed()
+			if (asString === undefined) {
+				return
+			}
 			historyControlsRef.current.add(asString, computed)
 			if (isNaN(computed)) {
 				outputControlsRef.current.replace('')
