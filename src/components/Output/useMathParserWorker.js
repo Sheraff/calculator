@@ -27,12 +27,10 @@ export default function useMathParserWorker({
 				const caret = (/** @type {Caret | null} */(data.caret))
 				if (parsed) {
 					setParsed(parsed)
-					// console.log(parsed)
 					onParsed(inputRef.current)
 				}
 				if (caret !== undefined) {
 					setCaret(caret)
-					// console.log(caret)
 				}
 			})
 		}
