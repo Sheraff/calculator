@@ -37,7 +37,11 @@ A build of this project is avaliable @ [sheraff.github.io/calculator](https://sh
 ```
 
 ## Easter egg
-Use numpad to input `123456789` to enable / disable the "free input" mode. This allows you to test the limits of the `MathParser` class. When using a mouse, you can hover the second line of text to observe how values are parsed and which operation takes priority.
+Use numpad to input `123456789` to enable / disable the "free input" mode. This allows you to test the limits of the `MathParser` class. 
+
+When using a mouse, you can hover the second line of text to observe how values are parsed and which operation takes priority. Or alternatively, you can use the <kbd>←</kbd> and <kbd>→</kbd> keys to move the caret in the *input* (`<Input>` component) and see it mapped to the *output* (`<Parsed>` component).
+
+When the text overflows its allocated space, both the *input* and the *output* should have their scrolls synced.
 
 ## Math Parser
 
@@ -58,3 +62,8 @@ Use numpad to input `123456789` to enable / disable the "free input" mode. This 
 - Complex math: each MathParser plugin implements a little bit of math. You can try the following strings: `+, -, *, /, ×, ÷, ^, π, pi, e, gold, phi, ɸ, tau, τ, infinity, ∞, !, ², ³, %, sin, cos, tan, log, ln, sqrt, √, abs, floor, ceil, round, sin⁻¹, cos⁻¹, tan⁻¹, asin, acos, atan`
 - Responsive layout: most phone sizes should work, horizontal or vertical
 - Tests: not a full coverage, but the math parsing logic is backed by Jest, try `npm test`
+
+## Limits
+
+- I did not take the time to eject from Create-React-App and configure the project
+- Factorials of float numbers are not implemented correctly (for example `3.1!`)
