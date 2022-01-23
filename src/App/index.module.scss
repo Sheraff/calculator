@@ -12,12 +12,18 @@
 		"numpad";
 	grid-template-rows: 1fr auto auto;
 
-	@media screen and (min-width: #{$widescreen}) {
+	@media (min-width: #{$widescreen}) {
 		grid-template-areas:
 			"history output"
 			"history numpad";
 		grid-template-rows: 1fr auto;
 		grid-template-columns: 500px 1fr;
+	}
+
+	@media (max-height: #{$small-height}) {
+		grid-template-areas:
+			"history numpad"
+			"output numpad";
 	}
 }
 

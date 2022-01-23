@@ -8,6 +8,7 @@
 	display: grid;
 	grid-template-areas: "num";
 	overflow: hidden;
+	height: 100%;
 
 	@media(min-width: #{$tablet}) {
 		grid-template-areas: "num extras";
@@ -35,6 +36,11 @@
 		font-weight: bold;
 		text-align: center;
 		width: 100%;
+	}
+
+	span {
+		padding: .5em;
+		pointer-events: none;
 	}
 }
 

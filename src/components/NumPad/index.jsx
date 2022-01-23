@@ -64,7 +64,7 @@ function NumPad({
 							tabIndex={drawer ? -1 : 0}
 							onPointerDown={noStealFocus}
 						>
-							{key}
+							<span>{key}</span>
 						</button>
 					</li>
 				)))}
@@ -83,7 +83,7 @@ function NumPad({
 							tabIndex={drawer ? 0 : -1}
 							onPointerDown={noStealFocus}
 						>
-							{key}
+							<span>{key}</span>
 						</button>
 					</li>
 				)))}
