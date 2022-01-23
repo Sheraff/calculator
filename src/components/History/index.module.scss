@@ -6,6 +6,14 @@
 	transition: transform $duration;
 }
 
+.empty {
+	transform: translateY(-100%);
+
+	@media screen and (min-width: #{$widescreen}) {
+		transform: none;
+	}
+}
+
 .drawer {
 	position: absolute;
 	bottom: 0;

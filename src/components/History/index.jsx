@@ -28,7 +28,8 @@ export default function History({
 	return (
 		<div
 			className={classNames(styles.container, {
-				[styles.open]: drawer
+				[styles.open]: drawer,
+				[styles.empty]: history.length === 0,
 			})}
 		>
 			<div className={styles.drawer}>
