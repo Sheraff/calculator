@@ -51,8 +51,8 @@ When the text overflows its allocated space, both the *input* and the *output* s
   1. `tokenize` converts an array of chars into an array of `Token` objects
   2. `reduce` converts an array of `Token` into a `Node` tree
   3. `resolve` walks the `Node` tree and computes the numerical value of each `Node`
-  4. `stringify` walks the `Node` tree and computes display string of each `Node`
-  5. `mapRange` walks the `Node` and maps the indexes of the input string to indexes in the output string
+  4. `stringify` walks the `Node` tree and computes the display string of each `Node`
+  5. `mapRange` walks the `Node` tree and maps the indexes of the input string to indexes in the output string
 
 - MathParser/plugins: each plugin extends `MathParser/classes/Plugin.js` which implements one function for each of the 5 steps of `MathParser`. A plugin may also override its own `Token` or `Node` type.
 
@@ -71,3 +71,4 @@ When the text overflows its allocated space, both the *input* and the *output* s
 - Factorials of float numbers are not implemented correctly (for example `3.1!`)
 - Very big numbers are not supported
 - In a real project, I might have used an external package for "float math"
+- Only tested on latest desktop Chrome and mobile Android
