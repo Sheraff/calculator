@@ -73,13 +73,18 @@ describe('ConstPlugin', () => {
 })
 
 describe('NumberPlugin', () => {
+	const parser = new MathParser([ NumberPlugin ])
 	it('should parse numbers', () => {
-		const parser = new MathParser([ NumberPlugin ])
 		const result = parser.parse('3789.39820')
 		expect(result.asString).toBe('3789.39820')
 		expect(result.computed).toBe(3789.39820)
 		expect(result.inputRange).toEqual([0, 9])
 		expect(result.outputRange).toEqual([0, 9])
+	})
+	it('can parse numbers starting with a "."', () => {
+		const result = parser.parse('.39820')
+		expect(result.asString).toBe('.39820')
+		expect(result.computed).toBe(0.39820)
 	})
 })
 
