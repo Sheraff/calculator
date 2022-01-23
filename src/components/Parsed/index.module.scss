@@ -2,6 +2,7 @@
 	height: 1.2em;
 	margin: 0 var(--output-inline-spacing);
 	overflow-x: scroll;
+	overflow-y: hidden;
 
 	&::-webkit-scrollbar {
 		display: none;
