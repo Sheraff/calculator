@@ -438,7 +438,13 @@ describe('plugins interactions', () => {
 			StringPlugin,
 			PartialsPlugin,
 		])
-		const result = parser.parse('3! - sin(-1)')
-		expect(result.asString).toBe('3! - sin(-1)') // 3! × -sin(-1)
+		{
+			const result = parser.parse('3! - sin(-1)')
+			expect(result.asString).toBe('3! - sin(-1)') // 3! × -sin(-1)
+		}
+		{
+			const result = parser.parse('√2 - π') // 'π' was not considered a Const (nor any other symbols)
+			expect(result.type).toBe('operation-binary')
+		}
 	})
 })
