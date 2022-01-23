@@ -72,3 +72,5 @@ When the text overflows its allocated space, both the *input* and the *output* s
 - Very big numbers are not supported
 - In a real project, I might have used an external package for "float math"
 - Only tested on latest desktop Chrome and mobile Android
+- Accessibility was not *really* taken into consideration for lack of time
+- Code is only loosely typed using JSDoc
