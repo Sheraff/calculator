@@ -1,6 +1,8 @@
 # Calculator
 
-A build of this project is avaliable @ [sheraff.github.io/calculator](https://sheraff.github.io/calculator/)
+A build of this project is avaliable @ [sheraff.github.io/calculator](https://sheraff.github.io/calculator/).
+
+On each user input, a **Web Worker** parses the string into an **Abstract Syntax Tree** (AST) in order to resolve the operations. The parser is built following the **Open-Closed Principle** where functionality is added by **Dependency Injection**.
 
 ## Engines
 
@@ -67,3 +69,5 @@ When the text overflows its allocated space, both the *input* and the *output* s
 
 - I did not take the time to eject from Create-React-App and configure the project
 - Factorials of float numbers are not implemented correctly (for example `3.1!`)
+- Very big numbers are not supported
+- In a real project, I might have used an external package for "float math"
