@@ -1,6 +1,8 @@
 @use '../../assets/styles/variables' as *;
 
 .main {
+	--tab-width: calc(2 * max(env(safe-area-inset-left), 1.5em));
+
 	background-color: var(--bg-num-pad);
 	color: var(--text-num-pad);
 	display: grid;
@@ -39,7 +41,7 @@
 
 .num {
 	grid-template-columns: repeat(4, 1fr);
-	padding-right: 2em;
+	padding-right: var(--tab-width);
 
 	>:nth-child(4n) {
 		color: var(--symbols-num-pad);
@@ -58,9 +60,9 @@
 
 	// drawer styles
 	position: relative;
-	transform: translateX(calc(100% - 2em));
+	transform: translateX(calc(100% - var(--tab-width)));
 	transition: transform $duration;
-	padding-left: 2em;
+	padding-left: var(--tab-width);
 
 	@media(min-width: #{$tablet}) {
 		transform: none;
@@ -74,7 +76,7 @@
 	left: 0;
 	top: 0;
 	bottom: 0;
-	width: 2em;
+	width: var(--tab-width);
 	box-sizing: content-box;
 
 	button {
