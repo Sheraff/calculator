@@ -5,6 +5,7 @@ import Parsed from '../Parsed'
 import Result from '../Result'
 import useSyncScroll from './useSyncScroll'
 import useMathParserWorker from './useMathParserWorker'
+import classNames from 'classnames'
 
 /**
  * @typedef {import('../Input').InputControls} InputControls
@@ -54,7 +55,9 @@ export default function Output({
 	})))
 
 	return (
-		<div className={styles.container}>
+		<div className={classNames(styles.container, {
+			[styles.unlocked]: unlocked
+		})}>
 			<Input
 				ref={inputRef}
 				controlsRef={inputControlsRef}

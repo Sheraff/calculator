@@ -13,4 +13,13 @@
 	gap: 1em;
 	padding: 1em 0;
 	line-height: 1.2;
+
+	&:not(.unlocked) {
+		padding: 2em 0;
+
+		>:nth-child(2),
+		>:nth-child(3) {
+			display: none;
+		}
+	}
 }
