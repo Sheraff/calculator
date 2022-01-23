@@ -1,13 +1,21 @@
 import styles from './index.module.scss'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { unstable_batchedUpdates } from 'react-dom'
 import Input from '../Input'
 import Parsed from '../Parsed'
 import Result from '../Result'
 
+/**
+ * @typedef {import('../Input').InputControls} InputControls
+ *
+ * @typedef {Object} OutputControlsAugment
+ * @property {() => Object} getParsed
+ * 
+ * @typedef {OutputControlsAugment & InputControls} OutputControls
+ */
+
 export default function Output({
-	initial,
-	inputControlsRef,
+	controlsRef,
 }) {
 	const [parsed, setParsed] = useState({})
 	const [caret, setCaret] = useState(null)
@@ -64,7 +72,7 @@ export default function Output({
 			})
 		}
 		worker.current.postMessage({ value: inputRef.current.value })
-	}, [initial, onScroll])
+	}, [onScroll])
 
 	const onChange = useCallback(({ target: { value } }, caret) => {
 		worker.current.postMessage({ value, caret })
@@ -80,6 +88,13 @@ export default function Output({
 		inputRef.current.setSelectionRange(detail[0], detail[1] + 1)
 	}
 
+	// allow parent to control component
+	const inputControlsRef = useRef(/** @type {InputControls} */(null))
+	useImperativeHandle(controlsRef, () => (/** @type {OutputControls} */({
+		...inputControlsRef.current,
+		getParsed: () => parsed,
+	})))
+
 	return (
 		<div className={styles.container}>
 			<Input
@@ -90,7 +105,6 @@ export default function Output({
 				onCaret={onCaret}
 				onScroll={onScroll}
 				onPointerEnter={onPointerEnter}
-				defaultValue={initial}
 			/>
 			<Parsed
 				ref={parsedRef}

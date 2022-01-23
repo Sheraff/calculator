@@ -2,6 +2,13 @@ import styles from './index.module.scss'
 import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import useMediaQuery from '../../assets/hooks/useMediaQuery'
 
+/**
+ * @typedef {Object} InputControls
+ * @property {(text: string) => void} insert
+ * @property {(text: string) => void} replace
+ * @property {() => void} delete
+ */
+
 const INPUT_MAP = {
 	'+': ' + ',
 	'-': ' - ',
@@ -38,7 +45,6 @@ function Input({
 	id,
 	onChange,
 	onCaret,
-	defaultValue,
 	onScroll,
 	onPointerEnter,
 	controlsRef,
@@ -119,7 +125,7 @@ function Input({
 	}
 
 	// allow parent to control the <input>
-	useImperativeHandle(controlsRef, () => ({
+	useImperativeHandle(controlsRef, () => (/** @type {InputControls} */({
 		insert: (text) => {
 			const string = INPUT_MAP[text] || text
 			const [a, b] = caretRef.current
@@ -127,8 +133,8 @@ function Input({
 			const withText = value.slice(0, a) + string + value.slice(b)
 			onProgrammaticChange(withText, [b + string.length, b + string.length])
 		},
-		clear: () => {
-			onProgrammaticChange('', [0, 0])
+		replace: (text) => {
+			onProgrammaticChange(text, [text.length, text.length])
 		},
 		delete: () => {
 			const [a, b] = caretRef.current
@@ -142,14 +148,14 @@ function Input({
 				onProgrammaticChange(text, [a, a])
 			}
 		}
-	}), [onProgrammaticChange])
+	})), [onProgrammaticChange])
 
 	// keep caret visible (but still allow TAB)
 	useEffect(() => {
 		const onClick = () => ref.current.focus()
 		window.addEventListener('click', onClick, {passive: true})
 		return () => {
-			window.removeEventListener('click', onClick, {passive: true})
+			window.removeEventListener('click', onClick)
 		}
 	}, [])
 
@@ -162,7 +168,6 @@ function Input({
 			onKeyDown={onKeyDown}
 			onBlur={onBlur}
 			type="text"
-			defaultValue={defaultValue}
 			onScroll={onScroll}
 			onPointerEnter={onPointerEnter}
 			readOnly={readOnly}

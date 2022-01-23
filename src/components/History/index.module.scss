@@ -23,11 +23,18 @@
 
 .history {
 	flex: 1;
+	display: flex;
+	flex-direction: column-reverse;
+	overflow: hidden;
+}
+
+.line {
+	padding: max(env(safe-area-inset-top), 0.5em) max(env(safe-area-inset-left), 1em);
+	width: 100%;
 }
 
 .toggle {
-	padding: 1em 1em calc(env(safe-area-inset-bottom) + 1em);
-	padding: 1em;
+	padding: 0.5em 1em calc(env(safe-area-inset-bottom) + 1em);
 	font-size: 1.5em;
 	font-weight: bold;
 	text-align: center;
