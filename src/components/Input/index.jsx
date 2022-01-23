@@ -31,14 +31,16 @@ const INPUT_MAP = {
  */
 function findWordAtPosition(str, pos) {
 	const substring = str.slice(0, pos)
+	let biggestMatch = 1
 	for(const [a, b] of Object.entries(INPUT_MAP)) {
 		if (substring.endsWith(a)) {
-			return a.length
+			biggestMatch = Math.max(a.length, biggestMatch)
 		}
 		if (substring.endsWith(b)) {
-			return b.length
+			biggestMatch = Math.max(b.length, biggestMatch)
 		}
 	}
+	return biggestMatch
 }
 
 function Input({
@@ -140,7 +142,7 @@ function Input({
 			const [a, b] = caretRef.current
 			const {value} = ref.current
 			if (a === b) {
-				const deleteCharCount = findWordAtPosition(value, a) || 1
+				const deleteCharCount = findWordAtPosition(value, a)
 				const text = value.slice(0, a - deleteCharCount) + value.slice(a)
 				onProgrammaticChange(text, [a - deleteCharCount, a - deleteCharCount])
 			} else {
