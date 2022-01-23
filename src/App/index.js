@@ -6,7 +6,6 @@ import History from '../components/History'
 import useMinVh from '../assets/hooks/useMinVh'
 
 const UNLOCK_MODE_SEQUENCE = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-let sequencePointer = 0
 
 function App() {
 	// stable 100vh value
@@ -14,6 +13,7 @@ function App() {
 
 	// "unlock mode" easter egg
 	const [unlocked, setUnlocked] = useState(false)
+	const sequencePointer = useRef(0)
 
 	// change <Input> on interaction with <NumPad>
 	const numPadRef = useRef(/** @type {HTMLDivElement} */(null))
@@ -38,11 +38,11 @@ function App() {
 		} else {
 			outputControlsRef.current.insert(value)
 		}
-		if (value === UNLOCK_MODE_SEQUENCE[sequencePointer]) {
-			sequencePointer++
-			if (sequencePointer === UNLOCK_MODE_SEQUENCE.length) {
+		if (value === UNLOCK_MODE_SEQUENCE[sequencePointer.current]) {
+			sequencePointer.current++
+			if (sequencePointer.current === UNLOCK_MODE_SEQUENCE.length) {
 				setUnlocked(a => !a)
-				sequencePointer = 0
+				sequencePointer.current = 0
 				outputControlsRef.current.replace('')
 			}
 		}
