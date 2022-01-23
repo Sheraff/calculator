@@ -164,8 +164,23 @@ function Input({
 		}
 	}, [])
 
+	const rafId = useRef(null)
+	const caretElementRef = useRef(/** @type {HTMLElement} */(null))
+	useEffect(() => () => cancelAnimationFrame(rafId.current), [])
+	const onFrame = useCallback(() => {
+		rafId.current = null
+		caretElementRef.current.style.setProperty('--offset', ref.current.offsetLeft - ref.current.scrollLeft)
+	}, [])
+	const _onScroll = useCallback((e) => {
+		if (rafId.current === null) {
+			rafId.current = requestAnimationFrame(() => onFrame())
+		}
+		onScroll(e)
+	}, [onFrame, onScroll])
+
 	return (
 		<Caret
+			ref={caretElementRef}
 			caret={caret}
 			minSpan={0}
 		>
@@ -177,7 +192,7 @@ function Input({
 				onKeyDown={onKeyDown}
 				onBlur={onBlur}
 				type="text"
-				onScroll={onScroll}
+				onScroll={_onScroll}
 				onPointerEnter={onPointerEnter}
 				readOnly={true}
 				spellCheck="false"

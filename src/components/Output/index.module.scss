@@ -1,6 +1,8 @@
 @use '../../assets/styles/variables' as *;
 
 .container {
+	--output-inline-spacing: 1em;
+
 	display: grid;
 	grid-auto-rows: 1fr;
 	justify-content: start;
@@ -9,5 +11,6 @@
 	grid-template-columns: 100%;
 	font-family: $font-mono;
 	gap: 1em;
-	padding: 1em;
+	padding: 1em 0;
+	line-height: 1.2;
 }

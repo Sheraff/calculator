@@ -1,11 +1,12 @@
 import classNames from 'classnames'
 import styles from './index.module.scss'
-import { useRef, createContext, useEffect } from 'react'
+import { useRef, createContext, useEffect, forwardRef, useImperativeHandle } from 'react'
 
 export const CaretContext = createContext([])
 
-export default function Caret({caret, children, minSpan}) {
+function Caret({caret, children, minSpan}, _ref) {
 	const ref = useRef(null)
+	useImperativeHandle(_ref, () => ref.current)
 
 	const lastCaretState = useRef(false)
 	useEffect(() => {
@@ -39,3 +40,5 @@ export default function Caret({caret, children, minSpan}) {
 		</div>
 	)
 }
+
+export default forwardRef(Caret)

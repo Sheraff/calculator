@@ -1,4 +1,6 @@
 .parsed {
+	height: 1.2em;
+	margin: 0 var(--output-inline-spacing);
 	overflow-x: scroll;
 
 	&::-webkit-scrollbar {

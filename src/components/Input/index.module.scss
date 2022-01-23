@@ -1,8 +1,9 @@
 .input {
 	border: 0;
-	padding: 0;
+	padding: 0 var(--output-inline-spacing) 0 0;
+	margin-left: var(--output-inline-spacing);
 	outline: none;
-	width: 100%;
+	width: calc(100% - var(--output-inline-spacing));
 
 	&::selection {
 		background-color: var(--bg-blue);
