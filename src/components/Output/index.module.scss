@@ -1,7 +1,7 @@
 @use '../../assets/styles/variables' as *;
 
 .container {
-	--output-inline-spacing: 1em;
+	--output-inline-spacing: 16px;
 
 	display: grid;
 	grid-auto-rows: 1fr;
