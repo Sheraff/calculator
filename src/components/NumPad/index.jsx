@@ -12,10 +12,10 @@ const NUM_KEYS = [
 
 const EXTRA_KEYS = [
 	['sin', 'cos', 'tan'],
-	['sin⁻¹', 'cos⁻¹', 'tan⁻¹'],
-	['log', 'ln', '√'],
-	['e', 'ɸ', 'π',],
-	['%', '!', '^'],
+	['asin', 'acos', 'atan'],
+	['log', 'ln', 'e'],
+	['√', '^', '%'],
+	['π', '!', '⌫'],
 ]
 
 function NumPad(_, ref) {

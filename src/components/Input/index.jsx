@@ -18,9 +18,9 @@ const INPUT_MAP = {
 	'sin': 'sin(',
 	'cos': 'cos(',
 	'tan': 'tan(',
-	'sin⁻¹': 'sin⁻¹(',
-	'cos⁻¹': 'cos⁻¹(',
-	'tan⁻¹': 'tan⁻¹(',
+	'asin': 'asin(',
+	'acos': 'acos(',
+	'atan': 'atan(',
 	'log': 'log(',
 	'ln': 'ln(',
 }

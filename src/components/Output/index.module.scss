@@ -1,3 +1,5 @@
+@use '../../assets/styles/variables' as *;
+
 .container {
 	display: grid;
 	grid-auto-rows: 1fr;
@@ -5,4 +7,5 @@
 	align-items: center;
 	justify-items: stretch;
 	grid-template-columns: 100%;
+	font-family: $font-mono;
 }

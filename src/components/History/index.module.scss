@@ -31,6 +31,7 @@
 .line {
 	padding: max(env(safe-area-inset-top), 0.5em) max(env(safe-area-inset-left), 1em);
 	width: 100%;
+	font-family: $font-mono;
 }
 
 .toggle {
