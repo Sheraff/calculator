@@ -11,7 +11,7 @@ const INPUT_MAP = {
 	'sin': 'sin(',
 	'cos': 'cos(',
 	'tan': 'tan(',
-	'sin⁻¹': 'sin⁻¹(', 
+	'sin⁻¹': 'sin⁻¹(',
 	'cos⁻¹': 'cos⁻¹(',
 	'tan⁻¹': 'tan⁻¹(',
 	'log': 'log(',
@@ -19,8 +19,8 @@ const INPUT_MAP = {
 }
 
 /**
- * @param {string} str 
- * @param {number} pos 
+ * @param {string} str
+ * @param {number} pos
  */
 function findWordAtPosition(str, pos) {
 	const substring = str.slice(0, pos)
@@ -46,6 +46,19 @@ function Input({
 	const ref = useRef(null)
 	const caretRef = useRef([])
 	useImperativeHandle(_ref, () => ref.current)
+
+	// keep caret state in sync w/ <input>
+	const scrollCaretIntoView = useCallback(([a]) => {
+		const caretPercent = a / ref.current.value.length
+		const sourceAvailableScroll = ref.current.scrollWidth - ref.current.clientWidth
+		const newScroll = caretPercent * sourceAvailableScroll
+		const minVisibleCurrentScrollPercent = ref.current.scrollLeft / sourceAvailableScroll
+		const maxVisibleCurrentScrollPercent = (ref.current.scrollLeft + ref.current.clientWidth) / sourceAvailableScroll
+		const isCaretInView = newScroll > minVisibleCurrentScrollPercent && newScroll < maxVisibleCurrentScrollPercent
+		if (!isCaretInView) {
+			ref.current.scrollLeft = sourceAvailableScroll * caretPercent
+		}
+	}, [])
 
 	const updateCaretRef = useCallback((callback) => {
 		const {current} = ref
@@ -73,20 +86,25 @@ function Input({
 	}
 
 	const onInputChange = ({nativeEvent}) => {
+		scrollCaretIntoView(caretRef.current)
 		updateCaretRef(() => {
 			onChange(nativeEvent, caretRef.current)
 		})
 	}
 
+	// prevent mobile keyboard from showing up
 	const readOnly = useMediaQuery('(pointer: coarse)')
 
+	// update caret when <input> value is changed
 	const onProgrammaticChange = useCallback((value, [a, b]) => {
 		ref.current.value = value
 		caretRef.current = [a, b]
 		ref.current.setSelectionRange(a, b)
 		onChange({target: ref.current}, caretRef.current)
-	}, [onChange])
+		scrollCaretIntoView(caretRef.current)
+	}, [onChange, scrollCaretIntoView])
 
+	// auto insert parenthesis pair when text is selected
 	const onKeyDown = (e) => {
 		if (e.key === '(') {
 			const [a, b] = caretRef.current
@@ -100,6 +118,7 @@ function Input({
 		}
 	}
 
+	// allow parent to control the <input>
 	useImperativeHandle(controlsRef, () => ({
 		insert: (text) => {
 			const string = INPUT_MAP[text] || text
@@ -124,6 +143,15 @@ function Input({
 			}
 		}
 	}), [onProgrammaticChange])
+
+	// keep caret visible (but still allow TAB)
+	useEffect(() => {
+		const onClick = () => ref.current.focus()
+		window.addEventListener('click', onClick, {passive: true})
+		return () => {
+			window.removeEventListener('click', onClick, {passive: true})
+		}
+	}, [])
 
 	return (
 		<input
