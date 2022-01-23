@@ -8,7 +8,7 @@ export default function Output({
 		<div className={styles.main}>
 			<code> = </code>
 			<output htmlFor={htmlFor}>
-				{(computed || Number.isNaN(computed))
+				{(typeof computed === 'number')
 					? String(computed)
 					: '...'}
 			</output>
