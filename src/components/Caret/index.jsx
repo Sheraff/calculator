@@ -25,13 +25,13 @@ function Caret({caret, children, minSpan}, _ref) {
 	
 	return (
 		<div className={styles.caretLine}>
-			<code
+			<div
 				ref={ref}
 				className={classNames(styles.caret, {
 					[styles.animatable]: minSpan > 0
 				})}
 			/>
-			<div>
+			<div className={styles.child}>
 				<CaretContext.Provider value={caret}>
 					{children}
 				</CaretContext.Provider>

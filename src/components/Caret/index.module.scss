@@ -7,9 +7,6 @@
 	display: inline-block;
 	overflow: hidden;
 
-	div {
-		white-space: nowrap;
-	}
 }
 
 .caret {
@@ -62,6 +59,10 @@
 			to { opacity: 0; }
 		}
 	}
+}
+
+.child {
+	white-space: nowrap;
 }
 
 .placeholder {
