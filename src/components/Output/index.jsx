@@ -54,6 +54,8 @@ export default function Output({
 		getParsed: () => parsed,
 	})))
 
+	const showResult = parsed.asString && String(parsed.computed) !== parsed.asString
+
 	return (
 		<div className={classNames(styles.container, {
 			[styles.unlocked]: unlocked
@@ -78,7 +80,7 @@ export default function Output({
 			/>
 			<Result
 				htmlFor="input"
-				computed={parsed.computed}
+				computed={showResult ? parsed.computed : null}
 			/>
 		</div>
 	)
