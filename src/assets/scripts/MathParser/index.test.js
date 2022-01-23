@@ -82,9 +82,9 @@ describe('NumberPlugin', () => {
 		expect(result.outputRange).toEqual([0, 9])
 	})
 	it('can parse numbers starting with a "."', () => {
-		const result = parser.parse('.39820')
-		expect(result.asString).toBe('.39820')
-		expect(result.computed).toBe(0.39820)
+		const result = parser.parse('.2')
+		expect(result.asString).toBe('.2')
+		expect(result.computed).toBe(0.2)
 	})
 })
 
