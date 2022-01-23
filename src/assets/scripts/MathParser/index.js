@@ -7,9 +7,11 @@ import ParentNode from './classes/ParentNode'
 
 /**
  * @template T
+ * @template U
  * @callback Walker
  * @param {T} node
  * @param {boolean?} bypass
+ * @returns {U}
  */
 
 export default class MathParser {
@@ -21,13 +23,13 @@ export default class MathParser {
 		this.walk = MathParser.walk
 	}
 
-	/** @type {Walker<import('./classes/Plugin').TokenizeContext>} */
+	/** @type {Walker<import('./classes/Plugin').TokenizeContext, Token[]>} */
 	static tokenize
-	/** @type {Walker<Node>} */
+	/** @type {Walker<Node, number>} */
 	static resolve
-	/** @type {Walker<Node>} */
+	/** @type {Walker<Node, string>} */
 	static stringify
-	/** @type {Walker<Node>} */
+	/** @type {Walker<Node, [number, number]>} */
 	static mapRange
 
 	/** 
@@ -92,8 +94,7 @@ export default class MathParser {
 	}
 
 	/**
-	 * @param {string} code 
-	 * @returns {Node}
+	 * @param {string} code
 	 */
 	parse(code) {
 		const tokens = this.tokenize(code)
@@ -113,6 +114,9 @@ export default class MathParser {
 		return processed
 	}
 
+	/**
+	 * @param {Node | Token} token 
+	 */
 	hasIntrinsicValue(token) {
 		for (const plugin of this.plugins) {
 			if (plugin.hasIntrinsicValue && plugin.isOwnNode(token, this) && plugin.hasIntrinsicValue(token, this)) {
@@ -123,10 +127,9 @@ export default class MathParser {
 	}
 
 	/**
-	 * @template T
-	 * @param {T} node
-	 * @param {Array<(node: T) => void>} onExit
-	 * @returns {T}
+	 * @param {Node} node
+	 * @param {Array<(node: Node) => void>} onExit
+	 * @returns {Node}
 	 */
 	static walk(node, onExit) {
 		const clone = Node.clone(node)
@@ -157,7 +160,6 @@ export default class MathParser {
 	/**
 	 * @param {Node} node 
 	 * @param {[number, number]} caret 
-	 * @returns 
 	 */
 	static testNodeForCaret(node, caret) {
 		const [n1, n2] = node.inputRange

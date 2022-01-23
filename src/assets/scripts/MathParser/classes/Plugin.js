@@ -50,7 +50,7 @@ export default class Plugin {
 	}
 
 	/** 
-	 * @param {Node} node 
+	 * @param {Node | Token} node 
 	 * @param {MathParser} parser
 	 */
 	static isOwnNode(node, parser) {
@@ -68,7 +68,7 @@ export default class Plugin {
 	}
 
 	/** 
-	 * @param {Node} node 
+	 * @param {Node | Token} node 
 	 * @param {MathParser} parser
 	 */
 	static hasIntrinsicValue(node, parser) {
