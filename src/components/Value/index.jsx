@@ -14,7 +14,7 @@ export default function Value({
 	const [childHover, setChildHover] = useState(false)
 	const caret = useContext(CaretContext)
 	const hover = selfHover && !childHover
-	const active = caret && outputRange[0] === caret[0] && outputRange[1] === caret[1]
+	const active = caret && outputRange && outputRange[0] === caret[0] && outputRange[1] === caret[1]
 	const ref = useRef(null)
 
 	const onMouseEnter = (e) => {

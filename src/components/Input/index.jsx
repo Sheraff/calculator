@@ -1,6 +1,12 @@
 import styles from './index.module.scss'
-import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
-import useMediaQuery from '../../assets/hooks/useMediaQuery'
+import {
+	useRef,
+	useEffect,
+	forwardRef,
+	useImperativeHandle,
+	useCallback,
+	Fragment,
+} from 'react'
 import useStateAndRef from '../../assets/hooks/useStateAndRef'
 import Caret from '../Caret'
 
@@ -52,9 +58,9 @@ function Input({
 	onScroll,
 	onPointerEnter,
 	controlsRef,
+	unlocked = false,
 }, _ref) {
 	const ref = useRef(null)
-	// const caretRef = useRef([])
 	const [caret, setCaret, caretRef] = useStateAndRef([])
 	useImperativeHandle(_ref, () => ref.current)
 
@@ -102,9 +108,6 @@ function Input({
 			onChange(nativeEvent, caretRef.current)
 		})
 	}
-
-	// prevent mobile keyboard from showing up
-	const readOnly = useMediaQuery('(pointer: coarse)')
 
 	// update caret when <input> value is changed
 	const onProgrammaticChange = useCallback((value, [a, b]) => {
@@ -164,12 +167,15 @@ function Input({
 		}
 	}, [])
 
+	// keep caret state in sync w/ scroll
 	const rafId = useRef(null)
 	const caretElementRef = useRef(/** @type {HTMLElement} */(null))
 	useEffect(() => () => cancelAnimationFrame(rafId.current), [])
 	const onFrame = useCallback(() => {
 		rafId.current = null
-		caretElementRef.current.style.setProperty('--offset', ref.current.offsetLeft - ref.current.scrollLeft)
+		if (caretElementRef.current) {
+			caretElementRef.current.style.setProperty('--offset', String(ref.current.offsetLeft - ref.current.scrollLeft))
+		}
 	}, [])
 	const _onScroll = useCallback((e) => {
 		if (rafId.current === null) {
@@ -177,13 +183,24 @@ function Input({
 		}
 		onScroll(e)
 	}, [onFrame, onScroll])
+	useEffect(() => {
+		if (!unlocked) {
+			onFrame()
+		}
+	}, [onFrame, unlocked])
+
+	// enable <Caret> only if native caret is disabled ("unlocked" mode)
+	const CaretWrapper = unlocked ? Fragment : Caret
+	const wrapperProps = unlocked
+		? {}
+		: {
+			ref: caretElementRef,
+			caret: caret,
+			minSpan: 0,
+		}
 
 	return (
-		<Caret
-			ref={caretElementRef}
-			caret={caret}
-			minSpan={0}
-		>
+		<CaretWrapper {...wrapperProps}>
 			<input
 				className={styles.input}
 				ref={ref}
@@ -194,11 +211,11 @@ function Input({
 				type="text"
 				onScroll={_onScroll}
 				onPointerEnter={onPointerEnter}
-				readOnly={true}
+				readOnly={!unlocked}
 				spellCheck="false"
 				autoFocus
 			/>
-		</Caret>
+		</CaretWrapper>
 	)
 }
 

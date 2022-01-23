@@ -17,6 +17,7 @@ import useMathParserWorker from './useMathParserWorker'
 
 export default function Output({
 	controlsRef,
+	unlocked = false,
 }) {
 	const inputRef = useRef(/** @type {HTMLInputElement} */(null))
 	const parsedRef = useRef(/** @type {HTMLElement} */(null))
@@ -62,6 +63,7 @@ export default function Output({
 				onCaret={onCaret}
 				onScroll={onScroll}
 				onPointerEnter={onPointerEnter}
+				unlocked={unlocked}
 			/>
 			<Parsed
 				ref={parsedRef}

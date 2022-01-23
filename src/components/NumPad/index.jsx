@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 
 const NUM_KEYS = [
@@ -32,6 +32,19 @@ function NumPad({
 
 	/** @type {React.PointerEventHandler<HTMLButtonElement>} */
 	const noStealFocus = (e) => e.preventDefault()
+
+	useEffect(() => {
+		const onKeyDown = (e) => {
+			if (e.key === 'Enter') {
+				onDispatch('=')
+				e.preventDefault()
+			}
+		}
+		window.addEventListener('keydown', onKeyDown)
+		return () => {
+			window.removeEventListener('keydown', onKeyDown)
+		}
+	}, [onDispatch])
 
 	return (
 		<div
