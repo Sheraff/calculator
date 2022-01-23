@@ -1,3 +1,5 @@
+@use '../../assets/styles/variables' as *;
+
 .caretLine {
 	position: relative;
 	isolation: isolate;
@@ -22,17 +24,43 @@
 	transform-origin: left;
 	transform: translateX(calc(var(--left) * 10%)) scaleX(calc(var(--width) * 10%));
 	opacity: var(--show);
-	transition: transform 150ms, opacity 200ms;
+	transition: opacity 200ms;
 	top: 0;
 	bottom: 0;
 
-	&::after {
+	&::before {
 		content: "          ";
 	}
 }
 
+.animatable {
+	transition: transform 150ms, opacity 200ms;
+}
+
+.blink,
 .freeze {
 	transition: opacity 200ms;
+}
+
+.blink {
+	background-color: transparent;
+	transform: translateX(calc(var(--left) * 10%));
+
+	&::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		background: currentColor;
+		width: 1px;
+		animation: #{$duration} steps(2, jump-none) infinite alternate blinkAnim;
+
+		@keyframes blinkAnim {
+			from { opacity: 1; }
+			to { opacity: 0; }
+		}
+	}
 }
 
 .placeholder {

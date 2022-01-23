@@ -1,6 +1,8 @@
 import styles from './index.module.scss'
 import { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react'
 import useMediaQuery from '../../assets/hooks/useMediaQuery'
+import useStateAndRef from '../../assets/hooks/useStateAndRef'
+import Caret from '../Caret'
 
 /**
  * @typedef {Object} InputControls
@@ -52,7 +54,8 @@ function Input({
 	controlsRef,
 }, _ref) {
 	const ref = useRef(null)
-	const caretRef = useRef([])
+	// const caretRef = useRef([])
+	const [caret, setCaret, caretRef] = useStateAndRef([])
 	useImperativeHandle(_ref, () => ref.current)
 
 	// keep caret state in sync w/ <input>
@@ -73,11 +76,11 @@ function Input({
 		if (document.activeElement === current) {
 			const newCaret = [current.selectionStart, current.selectionEnd]
 			if (newCaret[0] !== caretRef.current[0] || newCaret[1] !== caretRef.current[1]) {
-				caretRef.current = newCaret
+				setCaret(newCaret)
 				callback(caretRef.current)
 			}
 		}
-	}, [])
+	}, [setCaret, caretRef])
 
 	useEffect(() => {
 		const onSelect = () => {
@@ -106,11 +109,11 @@ function Input({
 	// update caret when <input> value is changed
 	const onProgrammaticChange = useCallback((value, [a, b]) => {
 		ref.current.value = value
-		caretRef.current = [a, b]
+		setCaret([a, b])
 		ref.current.setSelectionRange(a, b)
 		onChange({target: ref.current}, caretRef.current)
 		scrollCaretIntoView(caretRef.current)
-	}, [onChange, scrollCaretIntoView])
+	}, [setCaret, caretRef, onChange, scrollCaretIntoView])
 
 	// auto insert parenthesis pair when text is selected
 	const onKeyDown = (e) => {
@@ -150,7 +153,7 @@ function Input({
 				onProgrammaticChange(text, [a, a])
 			}
 		}
-	})), [onProgrammaticChange])
+	})), [caretRef, onProgrammaticChange])
 
 	// keep caret visible (but still allow TAB)
 	useEffect(() => {
@@ -162,20 +165,25 @@ function Input({
 	}, [])
 
 	return (
-		<input
-			className={styles.input}
-			ref={ref}
-			id={id}
-			onChange={onInputChange}
-			onKeyDown={onKeyDown}
-			onBlur={onBlur}
-			type="text"
-			onScroll={onScroll}
-			onPointerEnter={onPointerEnter}
-			readOnly={readOnly}
-			spellCheck="false"
-			autoFocus
-		/>
+		<Caret
+			caret={caret}
+			minSpan={0}
+		>
+			<input
+				className={styles.input}
+				ref={ref}
+				id={id}
+				onChange={onInputChange}
+				onKeyDown={onKeyDown}
+				onBlur={onBlur}
+				type="text"
+				onScroll={onScroll}
+				onPointerEnter={onPointerEnter}
+				readOnly={true}
+				spellCheck="false"
+				autoFocus
+			/>
+		</Caret>
 	)
 }
 

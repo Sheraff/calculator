@@ -1,7 +1,8 @@
 .input {
 	border: 0;
-	padding: .5em 1em;
+	padding: 0;
 	outline: none;
+	width: 100%;
 
 	&::selection {
 		background-color: var(--bg-blue);

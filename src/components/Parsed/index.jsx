@@ -33,7 +33,7 @@ function Parsed({
 			onScroll={onScroll}
 			onPointerEnter={onPointerEnter}
 		>
-			<Caret caret={caret}>
+			<Caret caret={caret} minSpan={1}>
 				<Dynamic {...parsed}/>
 			</Caret>
 		</div>
