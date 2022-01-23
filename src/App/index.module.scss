@@ -23,6 +23,9 @@
 
 .output {
 	grid-area: output;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .numpad {
