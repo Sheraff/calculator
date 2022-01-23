@@ -31,7 +31,6 @@
 	}
 
 	button {
-		padding: 1em;
 		font-size: 1.5em;
 		font-weight: bold;
 		text-align: center;
@@ -50,6 +49,19 @@
 
 	@media(min-width: #{$tablet}) {
 		padding-right: 0;
+	}
+
+	button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		max-height: 4em;
+
+		&::before {
+			content: '';
+			padding-bottom: 100%;
+			height: 0;
+		}
 	}
 }
 
