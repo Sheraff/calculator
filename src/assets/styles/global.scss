@@ -34,11 +34,16 @@
 	box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+	height: 100%;
+}
+
 body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	margin: 0;
-	height: 100%;
 	background-color: var(--bg-result-area);
 	color: var(--text-result-area);
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;

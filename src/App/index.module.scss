@@ -3,14 +3,32 @@
 .main {
 	background-color: var(--bg-result-area);
 	color: var(--text-result-area);
+
+	height: 100%;
+	display: grid;
+	grid-template-areas:
+		"history"
+		"output"
+		"numpad";
+	grid-template-rows: 1fr auto auto;
+
+	@media screen and (min-width: #{$widescreen}) {
+		grid-template-areas:
+			"history output"
+			"history numpad";
+		grid-template-rows: 1fr auto;
+		grid-template-columns: 500px 1fr;
+	}
 }
 
 .output {
-	display: grid;
-	grid-auto-rows: 1fr;
-	justify-content: start;
-	align-items: center;
-	justify-items: stretch;
-	grid-template-columns: 100%;
-	text-align: right;
+	grid-area: output;
+}
+
+.numpad {
+	grid-area: numpad;
+}
+
+.history {
+	grid-area: history;
 }

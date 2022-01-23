@@ -7,8 +7,12 @@
 	grid-template-areas: "num";
 	overflow: hidden;
 
-	@media(min-width: 768px) {
+	@media(min-width: #{$tablet}) {
 		grid-template-areas: "num extras";
+	}
+
+	@media(min-width: #{$widescreen}) {
+		border-left: 1px solid var(--subtext-result-area);
 	}
 }
 
@@ -42,7 +46,7 @@
 		border-left: 1px solid var(--subtext-result-area);
 	}
 
-	@media(min-width: 768px) {
+	@media(min-width: #{$tablet}) {
 		padding-right: 0;
 	}
 }
@@ -55,10 +59,10 @@
 	// drawer styles
 	position: relative;
 	transform: translateX(calc(100% - 2em));
-	transition: transform 500ms;
+	transition: transform $duration;
 	padding-left: 2em;
 
-	@media(min-width: 768px) {
+	@media(min-width: #{$tablet}) {
 		transform: none;
 		padding-left: 0;
 		grid-area: extras;
@@ -74,11 +78,11 @@
 	box-sizing: content-box;
 
 	button {
-		transition: transform 500ms;
+		transition: transform $duration;
 		padding: 0;
 	}
 
-	@media(min-width: 768px) {
+	@media(min-width: #{$tablet}) {
 		display: none;
 	}
 }

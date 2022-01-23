@@ -1,3 +1,9 @@
-.main {
-	padding: .5em 1em;
+.container {
+	display: grid;
+	grid-auto-rows: 1fr;
+	justify-content: start;
+	align-items: center;
+	justify-items: stretch;
+	grid-template-columns: 100%;
+	text-align: right;
 }
