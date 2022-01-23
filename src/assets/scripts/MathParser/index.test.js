@@ -373,6 +373,26 @@ describe('plugins interactions', () => {
 			expect(result.nodes[1].outputRange).toEqual([4, 9])
 		}
 	})
+	it('ImplicitMultiplication has several accepted combinations of children', () => {
+		const parser = new MathParser([
+			ConstPlugin,
+			GroupPlugin,
+			LeftUnaryOperatorPlugin,
+			RightUnaryOperatorPlugin,
+			MinusUnaryOperatorPlugin,
+			PowBinaryOperatorPlugin,
+			AndBinaryOperatorPlugin,
+			ImplicitMultiplicationPlugin,
+			OrBinaryOperatorPlugin,
+			NumberPlugin,
+			StringPlugin,
+			PartialsPlugin,
+		])
+		expect(parser.parse('8π').value).toBe('×')
+		expect(parser.parse('5(1)').value).toBe('×')
+		expect(parser.parse('3sin(2)').value).toBe('×')
+		expect(parser.parse('3!2').value).toBe('×')
+	})
 	it('handles messy inputs', () => {
 		const parser = new MathParser([
 			ConstPlugin,
