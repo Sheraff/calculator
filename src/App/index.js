@@ -3,8 +3,11 @@ import styles from './index.module.scss'
 import Output from '../components/Output'
 import NumPad from '../components/NumPad'
 import History from '../components/History'
+import useMinVh from '../assets/hooks/useMinVh'
 
 function App() {
+	useMinVh()
+
 	// change <Input> on interaction with <NumPad>
 	const numPadRef = useRef(/** @type {HTMLDivElement} */(null))
 	const outputControlsRef = useRef(/** @type {import('../components/Output').OutputControls} */(null))

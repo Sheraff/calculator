@@ -11,7 +11,7 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 100vh;
+	height: var(--min-vh, 100vh);
 	background-color: var(--bg-num-pad);
 	display: flex;
 	flex-direction: column;
@@ -48,7 +48,7 @@
 }
 
 .open {
-	transform: translateY(calc(100vh - 100%));
+	transform: translateY(calc(var(--min-vh, 100vh) - 100%));
 
 	.toggle {
 		transform: scaleY(-1);
