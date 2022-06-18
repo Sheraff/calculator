@@ -1,5 +1,7 @@
 # Calculator
 
+<img width="770" alt="Screen Shot 2022-06-18 at 22 04 26" src="https://user-images.githubusercontent.com/1325721/174455551-5f660975-0a50-441c-8e50-4f278f3aaf82.png">
+
 A build of this project is avaliable @ [sheraff.github.io/calculator](https://sheraff.github.io/calculator/).
 
 On each user input, a **Web Worker** parses the string into an **Abstract Syntax Tree** (AST) in order to resolve the operations. The parser is built following the **Open-Closed Principle** where functionality is added by **Dependency Injection**.
