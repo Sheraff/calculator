@@ -14,7 +14,7 @@ import MathParser from '.'
 
 describe('StringPlugin', () => {
 	it('should parse strings', () => {
-		const parser = new MathParser([ StringPlugin ])
+		const parser = new MathParser([StringPlugin])
 		const result = parser.parse('abc def ghi')
 		expect(result.asString).toBe('abc')
 		expect(result.computed).toBe(NaN)
@@ -73,7 +73,7 @@ describe('ConstPlugin', () => {
 })
 
 describe('NumberPlugin', () => {
-	const parser = new MathParser([ NumberPlugin ])
+	const parser = new MathParser([NumberPlugin])
 	it('should parse numbers', () => {
 		const result = parser.parse('3789.39820')
 		expect(result.asString).toBe('3789.39820')
@@ -446,7 +446,17 @@ describe('plugins interactions', () => {
 		])
 		const result = parser.parse('(sin(10 +pi) * pi^2 + 3! * (-1 pi tau)')
 		expect(result.asString).toBe('(sin(10 + π) * π ^ 2 + 3! * (-1 × π × τ))')
-		expect(result.computed).toEqual(-113.06597966275308)
+		expect(result.computed).toEqual(-113.0659796627531)
+	})
+	it('handles big numbers without loss of precision', () => {
+		const parser = new MathParser([
+			PowBinaryOperatorPlugin,
+			OrBinaryOperatorPlugin,
+			NumberPlugin,
+		])
+		const result = parser.parse('0.1 + 10^100 - 10^100')
+		expect(result.asString).toBe('0.1 + 10 ^ 100 - 10 ^ 100')
+		expect(result.computed).toEqual(0.1)
 	})
 	it('has edge-cases to keep in the test suite', () => {
 		const parser = new MathParser([

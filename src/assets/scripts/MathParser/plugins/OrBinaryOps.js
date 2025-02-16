@@ -2,8 +2,8 @@
 
 import BinaryOperatorPlugin from './BinaryOperators'
 
-class OrBinaryOperatorToken extends BinaryOperatorPlugin.token {}
-class OrBinaryOperatorNode extends BinaryOperatorPlugin.node {}
+class OrBinaryOperatorToken extends BinaryOperatorPlugin.token { }
+class OrBinaryOperatorNode extends BinaryOperatorPlugin.node { }
 
 export default class OrBinaryOperatorPlugin extends BinaryOperatorPlugin {
 	static token = OrBinaryOperatorToken
@@ -21,7 +21,7 @@ export default class OrBinaryOperatorPlugin extends BinaryOperatorPlugin {
 	 */
 	static resolve(node) {
 		// Collect all terms for Kahan summation
-		/** @type {bigint[]} */
+		/** @type {number[]} */
 		const terms = []
 		const signs = []
 
@@ -39,7 +39,7 @@ export default class OrBinaryOperatorPlugin extends BinaryOperatorPlugin {
 					collectTerms(right, -sign)
 				}
 			} else {
-				terms.push(BigInt(node.computed))
+				terms.push(node.computed)
 				signs.push(sign)
 			}
 		}
@@ -47,18 +47,67 @@ export default class OrBinaryOperatorPlugin extends BinaryOperatorPlugin {
 		// Start collection with the current operation
 		collectTerms(node)
 
+		if (terms.some(t => Number.isNaN(t)))
+			return NaN
+		if (terms.some(t => t === Infinity || t === -Infinity))
+			return terms.reduce((acc, val, i) => {
+				const sign = signs[i]
+				if (val === Infinity) return acc + sign
+				if (val === -Infinity) return acc - sign
+				return acc
+			}, 0) * Infinity
+
 		// Perform Kahan summation
 		let sum = BigInt(0)
 		let compensation = BigInt(0) // Running compensation for lost low-order bits
+		const multiplier = getMultiplier(...terms)
 
 		for (let i = 0; i < terms.length; i++) {
-			const term = terms[i] * BigInt(signs[i])
+			const term = Number.isInteger(terms[i])
+				? BigInt(terms[i]) * BigInt(multiplier * signs[i])
+				: BigInt(Math.trunc(terms[i] * multiplier * signs[i]))
 			const y = (term - compensation)
 			const t = (sum + y)
 			compensation = t - sum - y
 			sum = t
 		}
 
-		return Number(sum)
+		const max = BigInt(Number.MAX_SAFE_INTEGER)
+
+		if (sum < max) {
+			return Number(sum) / multiplier
+		}
+
+		let rest = multiplier
+		const step = BigInt(10)
+		while (sum > max && rest > 1) {
+			sum /= step
+			rest /= 10
+		}
+
+		return Number(sum) / rest
 	}
+}
+
+/**
+ * Return the smallest power of 10 that that can be multiplied by all terms to make them integers.
+ * @param {number[]} terms
+ * @returns {number}
+ */
+function getMultiplier(...terms) {
+	let maxDecimals = 0
+
+	for (const num of terms) {
+		if (!Number.isFinite(num) || Number.isInteger(num)) continue
+
+		// Convert to string and find decimal places
+		const decimalStr = num.toString().split('.')[1]
+		if (decimalStr) {
+			// Remove trailing zeros
+			const significantDecimals = decimalStr.replace(/0+$/, '')
+			maxDecimals = Math.max(maxDecimals, significantDecimals.length)
+		}
+	}
+
+	return Math.pow(10, maxDecimals)
 }
